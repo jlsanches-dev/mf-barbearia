@@ -31,6 +31,7 @@ Primeiro cliente: **MF Barbearia** (Jundiaí).
 | `index.html` | Estrutura da página | Só as linhas TROCAR |
 | `css/style.css` | Visual (espaços, tamanhos, efeitos) | Raramente |
 | `js/main.js` | Monta a página a partir do config | Não |
+| `fontes/` | Arquivos das fontes (hospedados no próprio site) | Só para trocar de fonte |
 | `img/` | Fotos publicadas no site | Sim |
 | `originais/` | Cópia das fotos originais (não vai para o site) | Não |
 | `servidor.ps1` | Ver o site no seu computador | Não |
@@ -42,3 +43,10 @@ Primeiro cliente: **MF Barbearia** (Jundiaí).
 - [ ] Endereço confere com o Google Maps
 - [ ] Linha `og:image` do `index.html` com o endereço completo da foto (depois de publicar)
 - [ ] Testar o link no WhatsApp para ver a prévia
+
+## Segurança (já vem pronta no modelo)
+
+- **Política de segurança (CSP)** no topo do `index.html`: o navegador só aceita arquivos do próprio site e o mapa do Google. Se um dia precisar de algo de fora (ex.: um vídeo do YouTube), essa linha precisa ser ajustada, senão o item é bloqueado.
+- **Textos do config entram como texto**, nunca como código, e só links `https://` são aceitos.
+- **Fontes hospedadas no próprio site**: o visitante não é rastreado pelo Google Fonts (LGPD).
+- **Conta do GitHub**: mantenha a verificação em duas etapas (2FA) ligada. Quem entra na sua conta consegue alterar o site de todos os clientes.

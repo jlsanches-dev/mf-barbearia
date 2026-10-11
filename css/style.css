@@ -189,6 +189,7 @@ h2 { font-size: clamp(2.2rem, 8vw, 3.2rem); margin-bottom: 1.25rem; }
 
 /* Equipe */
 .equipe { display: grid; gap: 24px; }
+.equipe-foto-caixa { min-width: 0; }
 .equipe-foto { width: 100%; height: auto; max-width: 480px; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 30%; border-radius: 20px; }
 .equipe-texto p { margin: 0; max-width: 34ch; font-size: 1.15rem; }
 .equipe h2 { color: var(--texto); }

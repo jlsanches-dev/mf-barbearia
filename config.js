@@ -14,13 +14,12 @@ window.SITE = {
   bairro: "Parque Almerinda Chaves",
   cidade: "Jundiaí",
 
-  // Fontes (todas gratuitas em https://fonts.google.com)
-  // Para trocar: escolha as fontes no site, clique em "Get embed code"
-  // e cole aqui o endereço que aparece em href="...".
+  // Fontes. Os arquivos ficam na pasta fontes/ (hospedados no próprio site,
+  // por privacidade e segurança). Para trocar de fonte, os arquivos novos
+  // precisam ir para essa pasta: peça ajuda ao Claude.
   fontes: {
     titulo: "Bodoni Moda",     // títulos e preços
-    texto: "Instrument Sans",  // textos e botões
-    link: "https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400..800&family=Instrument+Sans:wght@400;500;600&display=swap"
+    texto: "Instrument Sans"   // textos e botões
   },
 
   // Cores do site (códigos hexadecimais; teste em https://htmlcolorcodes.com)

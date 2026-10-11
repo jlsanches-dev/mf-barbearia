@@ -1,0 +1,10 @@
+Fontes usadas neste site
+
+- Bodoni Moda: Copyright 2020 The Bodoni Moda Project Authors (https://github.com/indestructible-type/Bodoni)
+- Instrument Sans: Copyright 2022 The Instrument Sans Project Authors (https://github.com/Instrument/instrument-sans)
+
+Ambas são distribuídas sob a SIL Open Font License, Version 1.1.
+Texto completo da licença: https://openfontlicense.org/open-font-license-official-text/
+
+Os arquivos .woff2 foram obtidos no Google Fonts (https://fonts.google.com),
+sem modificações.

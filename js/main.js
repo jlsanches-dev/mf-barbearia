@@ -1,5 +1,8 @@
-/* Monta o site a partir do config.js. Normalmente não é preciso mexer aqui. */
+/* Monta o site a partir do config.js. Normalmente não é preciso mexer aqui.
+   Segurança: todo texto do config entra na página como TEXTO (textContent),
+   nunca como HTML, e só links https:// são aceitos. */
 (function () {
+  "use strict";
   const S = window.SITE;
   const $ = (sel) => document.querySelector(sel);
   const $$ = (sel) => document.querySelectorAll(sel);
@@ -9,45 +12,62 @@
     if (txt != null) e.textContent = txt;
     return e;
   };
+  // Só aceita endereços https:// (bloqueia "javascript:" e afins)
+  const urlSegura = (u) => {
+    try { const x = new URL(u, location.href); return x.protocol === "https:" ? x.href : ""; }
+    catch (e) { return ""; }
+  };
+  // Só aceita imagens do próprio site (pasta img/)
+  const imgSegura = (u) => (typeof u === "string" && /^img\/[\w.\-]+$/.test(u) ? u : "");
+  const linkExterno = (href, cls, txt) => {
+    const a = el("a", cls, txt);
+    a.href = href; a.target = "_blank"; a.rel = "noopener noreferrer";
+    return a;
+  };
+  const novaImg = (f, cls, extra) => {
+    const src = f && imgSegura(f.src);
+    if (!src) return null;
+    const img = el("img", cls);
+    img.src = src; img.alt = f.alt || "";
+    Object.assign(img, extra || {});
+    return img;
+  };
+
+  S.equipe = S.equipe || {};
+  S.avaliacao = S.avaliacao || {};
+  S.depoimentos = S.depoimentos || [];
+  S.galeria = S.galeria || [];
+  S.logo = S.logo || {};
 
   const raiz = document.documentElement.style;
 
-  // ---------- Fontes ----------
+  // ---------- Fontes (os arquivos ficam na pasta fontes/) ----------
   if (S.fontes) {
-    if (S.fontes.link) {
-      const l = el("link"); l.rel = "stylesheet"; l.href = S.fontes.link;
-      document.head.append(l);
-    }
     if (S.fontes.titulo) raiz.setProperty("--fonte-titulo", `"${S.fontes.titulo}", Georgia, serif`);
     if (S.fontes.texto) raiz.setProperty("--fonte-texto", `"${S.fontes.texto}", system-ui, sans-serif`);
   }
 
   // ---------- Cores ----------
   const mapaCores = { fundo: "--fundo", superficie: "--superficie", texto: "--texto", textoSuave: "--texto-suave", brilho: "--brilho", detalhe: "--detalhe" };
-  for (const k in mapaCores) if (S.cores[k]) raiz.setProperty(mapaCores[k], S.cores[k]);
+  for (const k in mapaCores) {
+    const c = S.cores && S.cores[k];
+    if (c && /^#[0-9a-fA-F]{3,8}$/.test(c)) raiz.setProperty(mapaCores[k], c);
+  }
 
   // ---------- Links ----------
-  const whats = `https://wa.me/${S.contato.whatsapp}?text=${encodeURIComponent(S.contato.mensagemWhatsapp)}`;
+  const fone = String(S.contato.whatsapp || "").replace(/\D/g, "");
+  const whats = `https://wa.me/${fone}?text=${encodeURIComponent(S.contato.mensagemWhatsapp || "")}`;
   const rota = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(S.endereco.buscaMapa)}`;
-  const agenda = S.contato.agendamentoUrl || whats;
-  const links = { whatsapp: whats, rota: rota, agendamento: agenda };
+  const agendaUrl = urlSegura(S.contato.agendamentoUrl);
+  const links = { whatsapp: whats, rota: rota, agendamento: agendaUrl || whats };
   $$("[data-link]").forEach((a) => {
     a.href = links[a.dataset.link];
-    if (a.dataset.link === "agendamento") {
-      a.textContent = S.contato.agendamentoTexto;
-      a.target = "_blank";
-      a.rel = "noopener";
-    }
+    if (a.dataset.link === "agendamento") a.textContent = S.contato.agendamentoTexto;
   });
 
   // ---------- Textos simples ----------
-  S.equipe = S.equipe || {};
-  S.avaliacao = S.avaliacao || {};
-  S.depoimentos = S.depoimentos || [];
-  S.galeria = S.galeria || [];
   const campos = {
     nome: S.nome,
-    marca: S.marca || S.nome,
     slogan: S.slogan,
     local: `${S.bairro}, ${S.cidade}`,
     "equipe-titulo": S.equipe.titulo,
@@ -58,25 +78,26 @@
   // ---------- Logo do topo (ou o texto de "marca", se não houver logo) ----------
   const marca = $('[data-bloco="marca"]');
   marca.setAttribute("aria-label", `${S.nome}, voltar ao início`);
-  if (S.logo && S.logo.topo) {
-    const img = el("img", "topo-logo");
-    img.src = S.logo.topo; img.alt = ""; img.width = 48; img.height = 48;
-    marca.append(img);
-  } else marca.textContent = S.marca || S.nome;
+  const logoTopo = novaImg({ src: S.logo.topo, alt: "" }, "topo-logo", { width: 48, height: 48 });
+  if (logoTopo) marca.append(logoTopo);
+  else marca.textContent = S.marca || S.nome;
 
   // ---------- Fotos ----------
-  const fotos = { principal: S.fotoPrincipal, equipe: S.equipe.foto };
-  if (!S.fotoPrincipal || !S.fotoPrincipal.src) $(".espelho").remove();
-  $$("[data-foto]").forEach((img) => {
-    const f = fotos[img.dataset.foto];
-    if (f) { img.src = f.src; img.alt = f.alt; }
-  });
+  const espelho = $('[data-foto="principal"]');
+  const fotoTopo = novaImg(S.fotoPrincipal, null, { fetchPriority: "high", width: 900, height: 1200 });
+  if (fotoTopo) espelho.append(fotoTopo); else espelho.remove();
+
+  const fotoEquipe = novaImg(S.equipe.foto, "equipe-foto", { loading: "lazy", decoding: "async", width: 1200, height: 1600 });
+  if (fotoEquipe) $('[data-foto="equipe"]').append(fotoEquipe);
 
   // ---------- Avaliação ----------
   const nota = $('[data-bloco="avaliacao"]');
+  const linkNota = urlSegura(S.avaliacao.link);
   if (S.avaliacao.nota) {
-    nota.href = S.avaliacao.link;
-    nota.innerHTML = `<span class="estrelas" aria-hidden="true">★★★★★</span> <strong>${S.avaliacao.nota}</strong> no Google, ${S.avaliacao.total} avaliações`;
+    if (linkNota) nota.href = linkNota; else nota.removeAttribute("href");
+    const estrelas = el("span", "estrelas", "★★★★★");
+    estrelas.setAttribute("aria-hidden", "true");
+    nota.append(estrelas, " ", el("strong", null, S.avaliacao.nota), ` no Google, ${S.avaliacao.total} avaliações`);
   } else nota.remove();
 
   // ---------- Horários e "aberto agora" ----------
@@ -121,7 +142,7 @@
     }
     if (!melhor) return { aberto: false, texto: "Fechado" };
     const diaAbre = Math.floor((melhor.iv.ini % 10080) / 1440);
-    const hora = fmt(dias[diaAbre][0] && faixa(dias[diaAbre][0])[0]);
+    const hora = fmt(faixa(dias[diaAbre][0])[0]);
     const quando = diaAbre === agora.getDay() ? "hoje" : diaAbre === (agora.getDay() + 1) % 7 ? "amanhã" : dias[diaAbre][1].toLowerCase();
     return { aberto: false, texto: `Fechado agora, abre ${quando} às ${hora}` };
   }
@@ -131,17 +152,19 @@
   setInterval(pintarStatus, 60000);
 
   const tabela = $('[data-bloco="horarios"]');
+  const tbody = el("tbody");
   const hoje = agoraNaLoja().getDay();
   [1, 2, 3, 4, 5, 6, 0].forEach((i) => {
     const [chave, nomeDia] = dias[i];
     const h = faixa(chave);
     const tr = el("tr");
     if (i === hoje) { tr.className = "hoje"; tr.setAttribute("aria-current", "date"); }
-    tr.append(el("th", null, nomeDia + (i === hoje ? " (hoje)" : "")));
-    tr.append(el("td", null, Array.isArray(h) ? `${fmt(h[0])} ${h[1] === "00:00" ? "à" : "às"} ${fmt(h[1])}` : "Fechado"));
-    tr.firstChild.scope = "row";
-    tabela.append(tr);
+    const th = el("th", null, nomeDia + (i === hoje ? " (hoje)" : ""));
+    th.scope = "row";
+    tr.append(th, el("td", null, Array.isArray(h) ? `${fmt(h[0])} ${h[1] === "00:00" ? "à" : "às"} ${fmt(h[1])}` : "Fechado"));
+    tbody.append(tr);
   });
+  tabela.append(tbody);
 
   // ---------- Serviços ----------
   const caixaServicos = $('[data-bloco="servicos"]');
@@ -180,11 +203,7 @@
       ul.append(li);
     });
     planos.append(ul);
-    if (S.contato.agendamentoUrl) {
-      const a = el("a", "botao botao-principal", P.botao);
-      a.href = S.contato.agendamentoUrl; a.target = "_blank"; a.rel = "noopener";
-      planos.append(a);
-    }
+    if (agendaUrl) planos.append(linkExterno(agendaUrl, "botao botao-principal", P.botao));
   } else planos.remove();
 
   // ---------- Equipe ----------
@@ -202,27 +221,25 @@
       fig.append(bq, el("figcaption", null, `${d.autor}, pelo Google`));
       caixa.append(fig);
     });
-    if (S.avaliacao.link && S.avaliacao.total) {
-      const a = el("a", "link-avaliacoes", `Ler as ${S.avaliacao.total} avaliações no Google`);
-      a.href = S.avaliacao.link; a.target = "_blank"; a.rel = "noopener";
-      blocoDep.append(a);
+    if (linkNota && S.avaliacao.total) {
+      blocoDep.append(linkExterno(linkNota, "link-avaliacoes", `Ler as ${S.avaliacao.total} avaliações no Google`));
     }
   }
 
   // ---------- Galeria + ampliar foto ----------
   const galeria = $('[data-bloco="galeria"]');
   const dlg = $('[data-bloco="ampliar"]');
-  if (!S.galeria.length) galeria.closest("section").remove();
-  S.galeria.forEach((f) => {
+  const fotoGrande = el("img");
+  dlg.prepend(fotoGrande);
+  const fotosGaleria = S.galeria.filter((f) => imgSegura(f.src));
+  if (!fotosGaleria.length) galeria.closest("section").remove();
+  fotosGaleria.forEach((f) => {
     const b = el("button", "galeria-item");
     b.type = "button";
     b.setAttribute("aria-label", `Ampliar foto: ${f.alt}`);
-    const img = el("img");
-    img.src = f.src; img.alt = f.alt; img.loading = "lazy"; img.decoding = "async";
-    b.append(img);
+    b.append(novaImg(f, null, { loading: "lazy", decoding: "async" }));
     b.addEventListener("click", () => {
-      const big = dlg.querySelector("img");
-      big.src = f.src; big.alt = f.alt;
+      fotoGrande.src = imgSegura(f.src); fotoGrande.alt = f.alt || "";
       dlg.showModal();
     });
     galeria.append(b);
@@ -232,28 +249,31 @@
 
   // ---------- Endereço e mapa ----------
   const E = S.endereco;
-  $('[data-bloco="endereco"]').innerHTML =
-    `${E.rua}<br>${E.bairro}, ${E.cidade} - ${E.uf}<br>CEP ${E.cep}`;
+  $('[data-bloco="endereco"]').append(
+    E.rua, el("br"), `${E.bairro}, ${E.cidade} - ${E.uf}`, el("br"), `CEP ${E.cep}`
+  );
   const mapa = $('[data-bloco="mapa"]');
   const iframe = el("iframe");
   iframe.title = `Mapa: ${S.nome}`;
   iframe.loading = "lazy";
-  iframe.referrerPolicy = "no-referrer-when-downgrade";
+  iframe.referrerPolicy = "strict-origin-when-cross-origin";
+  // o mapa roda isolado: não consegue mexer na página nem navegar por ela
+  iframe.setAttribute("sandbox", "allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox");
   iframe.src = `https://www.google.com/maps?q=${encodeURIComponent(E.buscaMapa)}&output=embed`;
   mapa.append(iframe);
 
   // ---------- Rodapé ----------
   const rod = $('[data-bloco="rodape"]');
-  const ig = S.contato.instagram;
-  rod.innerHTML = `
-    ${S.logo && S.logo.src ? `<img class="rodape-logo" src="${S.logo.src}" alt="${S.logo.alt}" width="120" height="120" loading="lazy">` : ""}
-    <p class="rodape-nome">${S.nome}</p>
-    <ul class="rodape-links">
-      ${ig ? `<li><a href="https://instagram.com/${ig}" target="_blank" rel="noopener">Instagram @${ig}</a></li>` : ""}
-      <li><a href="${whats}" target="_blank" rel="noopener">WhatsApp ${S.contato.telefoneExibicao}</a></li>
-      ${S.contato.agendamentoUrl ? `<li><a href="${S.contato.agendamentoUrl}" target="_blank" rel="noopener">Agendamento online</a></li>` : ""}
-    </ul>
-    <p class="rodape-end">${E.rua}, ${E.bairro}, ${E.cidade} - ${E.uf}</p>`;
+  const ig = String(S.contato.instagram || "").replace(/[^\w.]/g, "");
+  const logoRod = novaImg({ src: S.logo.src, alt: S.logo.alt }, "rodape-logo", { width: 120, height: 120, loading: "lazy" });
+  if (logoRod) rod.append(logoRod);
+  rod.append(el("p", "rodape-nome", S.nome));
+  const ul = el("ul", "rodape-links");
+  const item = (a) => { const li = el("li"); li.append(a); ul.append(li); };
+  if (ig) item(linkExterno(`https://instagram.com/${ig}`, null, `Instagram @${ig}`));
+  item(linkExterno(whats, null, `WhatsApp ${S.contato.telefoneExibicao}`));
+  if (agendaUrl) item(linkExterno(agendaUrl, null, "Agendamento online"));
+  rod.append(ul, el("p", "rodape-end", `${E.rua}, ${E.bairro}, ${E.cidade} - ${E.uf}`));
 
   // ---------- Botão flutuante: aparece depois que os botões do topo saem da tela ----------
   const flutuante = $(".whats-flutuante");
@@ -274,8 +294,7 @@
     "@type": "BarberShop",
     name: S.nome,
     slogan: S.slogan,
-    image: new URL(S.fotoPrincipal.src, location.href).href,
-    telephone: "+" + S.contato.whatsapp,
+    telephone: "+" + fone,
     url: location.href.split("#")[0],
     address: { "@type": "PostalAddress", streetAddress: E.rua, addressLocality: E.cidade, addressRegion: E.uf, postalCode: E.cep, addressCountry: "BR" },
     geo: { "@type": "GeoCoordinates", latitude: E.latitude, longitude: E.longitude },
@@ -284,7 +303,10 @@
     })),
     sameAs: ig ? ["https://instagram.com/" + ig] : []
   };
+  if (fotoTopo) ld.image = fotoTopo.src;
   if (S.avaliacao.nota) ld.aggregateRating = { "@type": "AggregateRating", ratingValue: S.avaliacao.nota.replace(",", "."), reviewCount: S.avaliacao.total };
-  const sc = el("script"); sc.type = "application/ld+json"; sc.textContent = JSON.stringify(ld);
+  const sc = el("script"); sc.type = "application/ld+json";
+  // "<" escapado: impede que um texto do config "feche" o bloco de dados
+  sc.textContent = JSON.stringify(ld).replace(/</g, "\\u003c");
   document.head.append(sc);
 })();
