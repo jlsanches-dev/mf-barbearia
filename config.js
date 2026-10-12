@@ -78,10 +78,10 @@ window.SITE = {
 
   // Logo. "topo" = versão pequena do canto superior esquerdo; "src" = versão do rodapé.
   // Deixe os dois "" se o cliente não tiver logo (aí aparece o texto de "marca").
-  logo: { topo: "img/logo-topo.png", src: "img/logo-mf.jpg", alt: "Logo MF Barber, Matheus & Felipe" },
+  logo: { topo: "img/logo-topo.webp", src: "img/logo-mf.webp", alt: "Logo MF Barber, Matheus & Felipe" },
 
   // Foto principal (aparece dentro do "espelho" no topo)
-  fotoPrincipal: { src: "img/foto-1.jpg", alt: "Bancada da MF Barbearia com espelhos redondos iluminados" },
+  fotoPrincipal: { src: "img/foto-1.webp", alt: "Bancada da MF Barbearia com espelhos redondos iluminados" },
 
   // true = mostra o aviso "preços de exemplo" (use enquanto não tiver os reais)
   precosDeExemplo: false,
@@ -130,7 +130,7 @@ window.SITE = {
   equipe: {
     titulo: "Matheus & Felipe",
     texto: "Quem pega na máquina é quem cuida da casa. Matheus e Felipe atendem pessoalmente, com hora marcada, pra você chegar, sentar e sair do jeito que pediu.",
-    foto: { src: "img/foto-3.jpg", alt: "Matheus e Felipe, barbeiros da MF, ao lado das cadeiras" }
+    foto: { src: "img/foto-3.webp", alt: "Matheus e Felipe, barbeiros da MF, ao lado das cadeiras" }
   },
 
   // Avaliações reais de clientes (deixe a lista vazia [] para esconder)
@@ -142,8 +142,8 @@ window.SITE = {
 
   // Galeria de fotos (a primeira aparece maior)
   galeria: [
-    { src: "img/foto-6.jpg", alt: "Salão da MF com as cadeiras e a luz da bancada acesa" },
-    { src: "img/foto-2.jpg", alt: "Cadeira com a capa da MF diante dos espelhos" },
-    { src: "img/foto-4.jpg", alt: "Barbeiro cumprimentando um cliente no salão" }
+    { src: "img/foto-6.webp", alt: "Salão da MF com as cadeiras e a luz da bancada acesa" },
+    { src: "img/foto-2.webp", alt: "Cadeira com a capa da MF diante dos espelhos" },
+    { src: "img/foto-4.webp", alt: "Barbeiro cumprimentando um cliente no salão" }
   ]
 };

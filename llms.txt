@@ -1,0 +1,32 @@
+# MF Barbearia
+
+> Barbearia em Jundiaí - SP, tocada pelos barbeiros Matheus e Felipe. Corte, barba, tratamentos e planos de assinatura com cortes ilimitados. Agendamento online pela CashBarber ou pelo WhatsApp.
+
+- Endereço: Rua José Ribeiro Barbosa, 115, Parque Residencial Almerinda Chaves, Jundiaí - SP, CEP 13212-561
+- WhatsApp: (11) 96427-7062
+- Agendamento online: https://cashbarber.com.br/mfbarbearia
+- Instagram: https://instagram.com/mf_barbeariia
+- Nota no Google: 5,0 (31 avaliações)
+
+## Horários
+
+- Segunda: 10h às 23h
+- Terça a sexta: 9h à meia-noite
+- Sábado: 7h às 20h
+- Domingo: 9h às 16h
+
+## Serviços e preços
+
+- Cabelo: corte R$ 50, corte careca R$ 30, pezinho R$ 15, pigmentação R$ 35, hidratação R$ 35, alisamento R$ 35, progressiva a partir de R$ 100
+- Barba: barba R$ 50, acabamento R$ 30, bigode R$ 15, raspar na máquina R$ 5, pigmentação R$ 35, hidratação R$ 35
+- Rosto: sobrancelha R$ 15, sobrancelha na cera R$ 20, limpeza de pele R$ 50, epilação de orelha R$ 22, epilação nasal R$ 22
+
+## Planos de assinatura (mensais)
+
+- Corte ilimitado: R$ 89,90
+- Barba ilimitada: R$ 94,90
+- Corte + barba ilimitados: R$ 139,90
+
+## Página
+
+- [Site da MF Barbearia](https://jlsanches-dev.github.io/mf-barbearia/): serviços, preços, fotos, horários e mapa

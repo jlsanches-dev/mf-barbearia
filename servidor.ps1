@@ -5,7 +5,7 @@ param([int]$Porta = 8080)
 $raiz = [IO.Path]::GetFullPath($PSScriptRoot).TrimEnd('\') + '\'
 $tipos = @{ ".html"="text/html; charset=utf-8"; ".css"="text/css; charset=utf-8"; ".js"="text/javascript; charset=utf-8";
   ".jpg"="image/jpeg"; ".jpeg"="image/jpeg"; ".png"="image/png"; ".webp"="image/webp"; ".svg"="image/svg+xml";
-  ".ico"="image/x-icon"; ".woff2"="font/woff2"; ".txt"="text/plain; charset=utf-8" }
+  ".ico"="image/x-icon"; ".woff2"="font/woff2"; ".txt"="text/plain; charset=utf-8"; ".xml"="application/xml; charset=utf-8" }
 # pastas que nunca devem ser servidas
 $bloqueadas = @('.git', '.claude', 'originais')
 $l = New-Object System.Net.HttpListener

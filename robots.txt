@@ -1,0 +1,7 @@
+# Libera todos os buscadores e indica o mapa do site.
+# Obs.: só vale quando o site estiver na raiz de um domínio próprio
+# (ex.: mfbarbearia.com.br/robots.txt).
+User-agent: *
+Allow: /
+
+Sitemap: https://jlsanches-dev.github.io/mf-barbearia/sitemap.xml

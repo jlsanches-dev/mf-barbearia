@@ -17,11 +17,78 @@
   <link rel="canonical" href="https://jlsanches-dev.github.io/mf-barbearia/">
   <meta property="og:url" content="https://jlsanches-dev.github.io/mf-barbearia/">
   <meta property="og:image" content="https://jlsanches-dev.github.io/mf-barbearia/img/foto-1.jpg">
+  <meta property="og:image:width" content="900">
+  <meta property="og:image:height" content="1200">
+  <meta property="og:image:alt" content="Bancada da MF Barbearia com espelhos redondos iluminados">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="pt_BR">
+  <meta property="og:site_name" content="MF Barbearia">
+  <!-- Prévia no X/Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="MF Barbearia">
+  <meta name="twitter:description" content="A número 1. De líder para líder. Agende seu horário em Jundiaí.">
+  <meta name="twitter:image" content="https://jlsanches-dev.github.io/mf-barbearia/img/foto-1.jpg">
+  <meta name="twitter:image:alt" content="Bancada da MF Barbearia com espelhos redondos iluminados">
   <meta name="theme-color" content="#18191b">
   <link rel="icon" href="img/logo-topo.png" type="image/png">
   <link rel="apple-touch-icon" href="img/logo-topo.png">
+  <link rel="sitemap" type="application/xml" href="sitemap.xml">
+
+  <!-- Ficha da empresa para o Google e para IAs (JSON-LD).
+       ATENÇÃO: se mudar horário, telefone, endereço ou preços no config.js,
+       mude aqui também. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BarberShop",
+    "@id": "https://jlsanches-dev.github.io/mf-barbearia/#barbearia",
+    "name": "MF Barbearia",
+    "alternateName": "MF Barber - Matheus & Felipe",
+    "slogan": "A número 1. De líder para líder.",
+    "description": "Barbearia com Matheus e Felipe no Parque Almerinda Chaves, Jundiaí. Corte, barba, tratamentos e planos de assinatura.",
+    "url": "https://jlsanches-dev.github.io/mf-barbearia/",
+    "image": "https://jlsanches-dev.github.io/mf-barbearia/img/foto-1.jpg",
+    "logo": "https://jlsanches-dev.github.io/mf-barbearia/img/logo-topo.png",
+    "telephone": "+55-11-96427-7062",
+    "priceRange": "R$ 5 a R$ 139,90",
+    "currenciesAccepted": "BRL",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Rua José Ribeiro Barbosa, 115",
+      "addressLocality": "Jundiaí",
+      "addressRegion": "SP",
+      "postalCode": "13212-561",
+      "addressCountry": "BR"
+    },
+    "geo": { "@type": "GeoCoordinates", "latitude": -23.1444919, "longitude": -46.9947631 },
+    "areaServed": { "@type": "City", "name": "Jundiaí" },
+    "openingHoursSpecification": [
+      { "@type": "OpeningHoursSpecification", "dayOfWeek": "Monday", "opens": "10:00", "closes": "23:00" },
+      { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Tuesday", "Wednesday", "Thursday", "Friday"], "opens": "09:00", "closes": "23:59" },
+      { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "07:00", "closes": "20:00" },
+      { "@type": "OpeningHoursSpecification", "dayOfWeek": "Sunday", "opens": "09:00", "closes": "16:00" }
+    ],
+    "sameAs": ["https://instagram.com/mf_barbeariia", "https://cashbarber.com.br/mfbarbearia"],
+    "potentialAction": {
+      "@type": "ReserveAction",
+      "target": { "@type": "EntryPoint", "urlTemplate": "https://cashbarber.com.br/mfbarbearia" },
+      "name": "Agendar horário"
+    },
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Serviços",
+      "itemListElement": [
+        { "@type": "Offer", "price": "50.00", "priceCurrency": "BRL", "itemOffered": { "@type": "Service", "name": "Corte" } },
+        { "@type": "Offer", "price": "30.00", "priceCurrency": "BRL", "itemOffered": { "@type": "Service", "name": "Corte careca" } },
+        { "@type": "Offer", "price": "50.00", "priceCurrency": "BRL", "itemOffered": { "@type": "Service", "name": "Barba" } },
+        { "@type": "Offer", "price": "15.00", "priceCurrency": "BRL", "itemOffered": { "@type": "Service", "name": "Sobrancelha" } },
+        { "@type": "Offer", "price": "50.00", "priceCurrency": "BRL", "itemOffered": { "@type": "Service", "name": "Limpeza de pele" } },
+        { "@type": "Offer", "price": "89.90", "priceCurrency": "BRL", "itemOffered": { "@type": "Service", "name": "Plano corte ilimitado (mensal)" } },
+        { "@type": "Offer", "price": "139.90", "priceCurrency": "BRL", "itemOffered": { "@type": "Service", "name": "Plano corte + barba ilimitados (mensal)" } }
+      ]
+    }
+  }
+  </script>
   <!-- /TROCAR -->
 
   <link rel="preload" href="fontes/bodoni-moda-latin.woff2" as="font" type="font/woff2" crossorigin>

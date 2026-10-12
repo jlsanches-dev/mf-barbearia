@@ -287,26 +287,4 @@
     }).observe(acoes);
   }
 
-  // ---------- Dados para o Google (busca local) ----------
-  const codDia = { domingo: "Sunday", segunda: "Monday", terca: "Tuesday", quarta: "Wednesday", quinta: "Thursday", sexta: "Friday", sabado: "Saturday" };
-  const ld = {
-    "@context": "https://schema.org",
-    "@type": "BarberShop",
-    name: S.nome,
-    slogan: S.slogan,
-    telephone: "+" + fone,
-    url: location.href.split("#")[0],
-    address: { "@type": "PostalAddress", streetAddress: E.rua, addressLocality: E.cidade, addressRegion: E.uf, postalCode: E.cep, addressCountry: "BR" },
-    geo: { "@type": "GeoCoordinates", latitude: E.latitude, longitude: E.longitude },
-    openingHoursSpecification: Object.keys(S.horarios).filter((d) => Array.isArray(S.horarios[d])).map((d) => ({
-      "@type": "OpeningHoursSpecification", dayOfWeek: codDia[d], opens: S.horarios[d][0], closes: S.horarios[d][1] === "00:00" ? "23:59" : S.horarios[d][1]
-    })),
-    sameAs: ig ? ["https://instagram.com/" + ig] : []
-  };
-  if (fotoTopo) ld.image = fotoTopo.src;
-  if (S.avaliacao.nota) ld.aggregateRating = { "@type": "AggregateRating", ratingValue: S.avaliacao.nota.replace(",", "."), reviewCount: S.avaliacao.total };
-  const sc = el("script"); sc.type = "application/ld+json";
-  // "<" escapado: impede que um texto do config "feche" o bloco de dados
-  sc.textContent = JSON.stringify(ld).replace(/</g, "\\u003c");
-  document.head.append(sc);
 })();
