@@ -43,6 +43,9 @@ Primeiro cliente: **MF Barbearia** (Jundiaí).
 - [ ] Endereço confere com o Google Maps
 - [ ] Linha `og:image` do `index.html` com o endereço completo da foto (depois de publicar)
 - [ ] Testar o link no WhatsApp para ver a prévia
+- [ ] Ficha JSON-LD no `index.html` e `llms.txt` com os mesmos dados do config (horários, preços, endereço)
+- [ ] Endereço do site atualizado em `sitemap.xml`, `robots.txt`, `llms.txt` e nas meta tags
+- [ ] Fotos novas convertidas para WebP (peça ao Claude)
 
 ## Segurança (já vem pronta no modelo)
 
